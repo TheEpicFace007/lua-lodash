@@ -1953,7 +1953,13 @@ function lodash.map(collection, iteratee)
     local result = {}
     for i = 1, #collection do
         local value = collection[i]
-        local iterateeResult = iteratee(value, i, collection)
+        local iterateeResult
+        if type(iteratee) == "function" then
+            iterateeResult = iteratee(value, i, collection)
+        else
+            iterateeResult = value[iteratee]
+        end
+
         if type(iterateeResult) == "table" then
             result = lodash.concat(result, lodash.map(iterateeResult, iteratee))
         else
@@ -2138,8 +2144,12 @@ function lodash.sortBy(collection, iteratees)
         local value = collection[i]
         local resultValue = {}
         for j = 1, #iteratees do
-            local resultValueItem = iteratees(value)
-            resultValue[j] = resultValueItem
+            if type(iteratees[j]) ~= "function"  then
+                resultValue[j] = iteratees[j]
+            else
+                local resultValueItem = iteratees(value)
+                resultValue[j] = resultValueItem
+            end
         end
         result[i] = {value, resultValue}
     end
