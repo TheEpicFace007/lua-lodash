@@ -2138,8 +2138,7 @@ function lodash.sortBy(collection, iteratees)
         local value = collection[i]
         local resultValue = {}
         for j = 1, #iteratees do
-            local iteratee = iteratees[j]
-            local resultValueItem = iteratee(value)
+            local resultValueItem = iteratees(value)
             resultValue[j] = resultValueItem
         end
         result[i] = {value, resultValue}
@@ -3150,8 +3149,7 @@ function lodash.chain(value)
         end
     }
     -- merge methods in t
-    for k, v in next(lodash) do
-
+    for k, v in next, lodash do
         if type(v) == "function" and not lodash.includes(unchainableFuncs, k) then
             t[k] = function (self, ...)
                 -- throw a error if function is called without :
@@ -3168,7 +3166,7 @@ function lodash.chain(value)
         end
     end
     -- transfer all the lua standard string methods to t
-    for k, v in next(string) do
+    for k, v in next, string do
         if type(v) == "function" then
             t[k] = function (self, ...)
                 if not self._value then
@@ -3183,7 +3181,7 @@ function lodash.chain(value)
         end
     end
     -- transfer all the lua standard table methods to t
-    for k, v in next(table) do
+    for k, v in next, table do
         if type(v) == "function" then
             t[k] = function (self, ...)
                 if not self._value then
@@ -3201,10 +3199,11 @@ function lodash.chain(value)
     return t
 end
 
----Creates a `lodash` wrapper instance with explicit method chain sequences enabled.
----@param value any @The value to wrap.
----@return table @Returns the new `lodash` wrapper instance.
 lodash = setmetatable(lodash, {
+    --- Creates a `lodash` wrapper instance with explicit method chain sequences enabled.
+    ---@param value any @The value to wrap.
+    ---@return table @Returns the new `lodash` wrapper instance.
+    ---@meta __call @See lodash.chain.
     __call = function (self, value)
         return lodash.chain(value)
     end
