@@ -666,20 +666,22 @@ end
 --- @return table @Returns the new array of filtered values.
 function lodash.difference(array, ...)
     local result = {}
+    local excludingc = {...}
     for i = 1, #array do
-        result[#result + 1] = array[i]
-    end
-    for i = 1, select('#', ...) do
-        local arg = select(i, ...)
-        for j = 1, #arg do
-            for k = 1, #result do
-                if lodash.isEqual(result[k], arg[j]) then
-                    result[k] = nil
-                end
+        local value = array[i]
+        local found = false
+        for j = 1, #excludingc do
+            if lodash.includes(excludingc[j], value) then
+                found = true
+                break
             end
         end
+        if not found then
+            result[#result + 1] = value
+        end
     end
-    return lodash.compact(result)
+
+    return result
 end
 
 ---This method is like [`_.difference`](#_.difference) except that it accepts iteratee which is invoked for each element of array and values to generate the criterion by which they're compared. The order and references of result values are determined by the first array. The iteratee is invoked with one argument: (value).
@@ -1525,6 +1527,15 @@ function lodash.union(...)
             end
         end
     end
+    local elemLen = 0
+    for idx in pairs(result) do
+        elemLen = idx
+    end
+    print(elemLen)
+    for idx = elemLen, 1, -1 do
+        -- move the element to the empty slot
+        result[elemLen] = result[idx-1]        
+    end
     return result
 end
 
@@ -1953,12 +1964,7 @@ function lodash.map(collection, iteratee)
     local result = {}
     for i = 1, #collection do
         local value = collection[i]
-        local iterateeResult
-        if type(iteratee) == "function" then
-            iterateeResult = iteratee(value, i, collection)
-        else
-            iterateeResult = value[iteratee]
-        end
+        local iterateeResult = iteratee(value, i, collection)
 
         if type(iterateeResult) == "table" then
             result = lodash.concat(result, lodash.map(iterateeResult, iteratee))
