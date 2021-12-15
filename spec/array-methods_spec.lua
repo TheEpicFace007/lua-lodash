@@ -1,3 +1,8 @@
+--[[
+  These units tests are based off of the tests of javascript lodash:
+  https://github.com/lodash/lodash/blob/master/test/Arrays-category-methods.js
+]]
+
 local _ = require'lodash'
 describe('"Arrays" category methods', function ()
   local args = { 1, nil, { 3 }, nil, 5 }
@@ -7,7 +12,7 @@ describe('"Arrays" category methods', function ()
   it("#difference", function ()
     assert.are.same(_.difference(args, { nil }), { 1, { 3 },  5 })
   end)
-  it("#union", function () 
+  it("#union", function ()
     assert.are.same(_.union(args, { nil, 6 }),
       { 1, nil, { 3 }, 5, 6 })
   end)
