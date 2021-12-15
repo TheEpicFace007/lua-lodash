@@ -763,12 +763,13 @@ end
 --- @param predicate function @The function invoked per iteration.
 --- @return table @Returns the slice of `array`.
 function lodash.dropRightWhile(array, predicate)
+    local result = {}
     for i = #array, 1, -1 do
         if not predicate(array[i], i, array) then
-            return lodash.slice(array, 1, i)
+            table.insert(result, array[i])
         end
     end
-    return {}
+    return result
 end
 
 ---Creates a slice of `array` excluding elements dropped from the beginning.
@@ -856,7 +857,14 @@ function lodash.flatten(array)
             result[#result + 1] = array[i]
         end
     end
-    return result
+    local finalResult, resultLen = {}, 0
+    for idx in ipairs(result) do
+        if result[idx] then
+            resultLen = resultLen + 1
+            finalResult[resultLen] = result[idx]
+        end
+    end
+    return finalResult
 end
 
 ---Recursively flattens `array`.
@@ -956,8 +964,8 @@ function lodash.intersection(...)
         return result
     end
     local array = args[1]
-    for i = 1, #array do
-        local value = array[i]
+    for i_2 = 1, #array do
+        local value = array[i_2]
         for j = 2, length do
             if not lodash.includes(args[j], value) then
                 break
@@ -1479,22 +1487,24 @@ end
 
 ---Create a slice of `array` with elements taken from the end. Elements are taken until `predicate` returns falsey. The predicate is invoked with three arguments: (value, index, array).
 ---@param array table @The array to query.
----@param predicate function @The function invoked per iteration. .identity)
+---@param predicate function @The function invoked per iteration.
 ---@return table @Returns the slice of `array`.
 function lodash.takeRightWhile(array, predicate)
     predicate = predicate or lodash.identity
     local result = {}
     local len = #array
     for i = len, 1, -1 do
-        if not predicate(array[i]) then
-            len = i
-            break
+        if predicate(array[i]) then
+            table.insert(result, array[i])
+        else
+            -- break if predicate is falsey and its not the first iteration of the loop that has been complicated
+            if i ~= len then
+                break
+            end
         end
     end
-    for i = len, 1, -1 do
-        result[i - len + 1] = array[i]
-    end
-    return result
+    print(result[1])
+   return result
 end
 
 ---Create a slice of `array` with elements taken from the beginning. Elements are taken until `predicate` returns falsey. The predicate is invoked with three arguments: (value, index, array).
@@ -1529,12 +1539,19 @@ function lodash.union(...)
     end
     local elemLen = 0
     for idx in pairs(result) do
-        elemLen = idx
+        debug.setlocal(2, 1, idx)
     end
-    print(elemLen)
-    for idx = elemLen, 1, -1 do
-        -- move the element to the empty slot
-        result[elemLen] = result[idx-1]        
+    local idx = 0
+    while idx < elemLen do
+        local value = result[idx + 1]
+        for i = 1, #args do
+            if not lodash.includes(args[i], value) then
+                table.remove(result, idx + 1)
+                elemLen = elemLen - 1
+                break
+            end
+        end
+        idx = idx + 1
     end
     return result
 end
@@ -2189,7 +2206,7 @@ end
 
 --- "Math" Methods
 
----Calculate the power of 
+---Calculate the power of
 ---@param n number @The base.
 ---@param power number @The exponent.
 ---@return number @Returns the result of `x` raised to the power of `y`.
@@ -3138,7 +3155,7 @@ end
 ---Create a `lodash` wrapper instance that wrap `value` with explicit method `chain`. The result of `chain` is then passed to the `lodash` constructor to create the wrapped value.
 ---@param value any @The value to wrap.
 ---@return table @Returns the new `lodash` wrapper instance.
----@example 
+---@example
 ---```lua
 ---local users = {
 ---    { users = 'barney', age = 36 },
@@ -3367,7 +3384,7 @@ end
 ---@param length number @The padding length.
 ---@param chars string @The string used as padding. *(optional)* The default is `" "`.
 ---@return string @Returns the padded string.
----@example 
+---@example
 ---```lua
 ---_.pad('abc', 8) -- => ' abc   '
 ---_.pad('abc', 8, '_-') -- => '_-abc_-_'
