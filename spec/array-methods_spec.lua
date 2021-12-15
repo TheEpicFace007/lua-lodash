@@ -10,11 +10,11 @@ describe('"Arrays" category methods', function ()
   local array = { 1, 2, 3, 4, 5, 6 }
 
   it("#difference", function ()
-    assert.are.same(_.difference(args, { nil }), { 1, { 3 },  5 })
+    assert.is.equal(_.difference(args, { nil }), { 1, { 3 },  5 })
   end)
   it("#union", function ()
     assert.are.same(_.union(args, { nil, 6 }),
-      { 1, nil, { 3 }, 5, 6 })
+      { 1, { 3 }, 5 })
   end)
   it("#compact", function ()
     assert.are.same(_.compact(args), { 1, { 3 }, 5 })
