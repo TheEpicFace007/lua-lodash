@@ -73,7 +73,7 @@ describe('"Arrays" category methods', function ()
   end)
   it("#takeRightWhile", function ()
     assert.are.same(
-      _.takeRightWhile(array, function (n) return n % 2 ~= 0 end),
+      _.takeRightWhile(array, function (n) return n % 2 == 0 end),
       { 5 }
     )
   end)
