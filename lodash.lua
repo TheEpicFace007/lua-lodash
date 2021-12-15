@@ -1494,7 +1494,7 @@ function lodash.takeRightWhile(array, predicate)
     local result = {}
     local len = #array
     for i = len, 1, -1 do
-        if predicate(array[i]) then
+        if not predicate(array[i]) then
             table.insert(result, array[i])
         else
             -- break if predicate is falsey and its not the first iteration of the loop that has been complicated
@@ -1515,10 +1515,13 @@ function lodash.takeWhile(array, predicate)
     predicate = predicate or lodash.identity
     local result = {}
     for i = 1, #array do
-        if predicate(array[i]) then
+        if not predicate(array[i]) then
             result[i] = array[i]
         else
-            break
+            -- break if predicate is falsey and its not the first iteration of the loop that has been complicated
+            if i ~= 1 then
+                break
+            end
         end
     end
     return result
