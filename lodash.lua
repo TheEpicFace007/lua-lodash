@@ -1532,29 +1532,17 @@ end
 ---@return table @Returns the new array of combined values.
 function lodash.union(...)
     local result = {}
-    local args = {...}
-    for i = 1, #args do
-        for j = 1, #args[i] do
-            if not lodash.includes(result, args[i][j]) then
-                result[#result + 1] = args[i][j]
+    local arrays = {...}
+    local arrayToInspect = arrays[1]
+    -- remove the array inspect from the arrays
+    table.remove(arrays, 1)
+    for _, value in next, arrayToInspect do
+        for _, v2 in pairs(arrays) do
+            if not lodash.includes(arrayToInspect, value) 
+                or not lodash.includes(v2, value) then
+                table.insert(result, value)
             end
         end
-    end
-    local elemLen = 0
-    for idx in pairs(result) do
-        debug.setlocal(2, 1, idx)
-    end
-    local idx = 0
-    while idx < elemLen do
-        local value = result[idx + 1]
-        for i = 1, #args do
-            if not lodash.includes(args[i], value) then
-                table.remove(result, idx + 1)
-                elemLen = elemLen - 1
-                break
-            end
-        end
-        idx = idx + 1
     end
     return result
 end
