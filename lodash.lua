@@ -1272,7 +1272,6 @@ end
 ---@param value any @The value to evaluate.
 ---@return number @Returns the index at which `value` should be inserted into `array`.
 function lodash.sortedIndex(array, value)
-    array = table.sort(array)
     local len = #array
     local mid = math.floor(len / 2)
     local start = 1
@@ -1320,7 +1319,6 @@ end
 ---@param value any @The value to evaluate.
 ---@return number @Returns the index at which `value` should be inserted into `array`.
 function lodash.sortedIndexOf(array, value)
-    array = table.sort(array)
     local len = #array
     local mid = math.floor(len / 2)
     local start = 1
@@ -1343,7 +1341,6 @@ end
 ---@param value any @The value to evaluate.
 ---@return number @Returns the index at which `value` should be inserted into `array`.
 function lodash.sortedLastIndex(array, value)
-    array = table.sort(array)
     local len = #array
     local mid = math.floor(len / 2)
     local start = 1
@@ -1365,12 +1362,6 @@ end
 ---@param iteratee function @The iteratee invoked per element. .identity)
 ---@return number @Returns the index at which `value` should be inserted into `array`.
 function lodash.sortedLastIndexBy(array, value, iteratee)
-    array = table.sort(array, function(a, b)
-        return iteratee(a) < iteratee(b)
-    end)
-    if iteratee then
-        iteratee = lodash.identity
-    end
     local len = #array
     local mid = math.floor(len / 2)
     local start = 1
@@ -1391,7 +1382,6 @@ end
 ---@param value any @The value to evaluate.
 ---@return number @Returns the index at which `value` should be inserted into `array`.
 function lodash.sortedLastIndexOf(array, value)
-    array = table.sort(array)
     local len = #array
     local mid = math.floor(len / 2)
     local start = 1
