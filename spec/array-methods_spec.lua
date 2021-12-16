@@ -55,15 +55,19 @@ describe('"Arrays" category methods', function ()
   it("#lastIndexOf", function ()
     assert.is.equal(_.lastIndexOf(array, 3), 3)
   end)
+  --- TODO: fix this test
   it("#sortedIndex", function ()
     assert.is.equal(_.sortedIndex(table.remove(sortedArgs, 2), 3), 2)
   end)
+  --- TODO: fix this test
   it("#sortedIndexOf", function ()
     assert.is.equal(_.sortedIndexOf(sortedArgs, 3), 2)
   end)
+  --- TODO: fix this test
   it("#sortedLastIndex", function ()
     assert.is.equal(_.sortedLastIndex(sortedArgs, 3), 4)
   end)
+  -- TODO: fix this test
   it("#sortedLastIndexOf", function ()
     assert.is.equal(_.sortedLastIndexOf(sortedArgs, 3), 4)
   end)
