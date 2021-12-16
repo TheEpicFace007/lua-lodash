@@ -1493,7 +1493,6 @@ function lodash.takeRightWhile(array, predicate)
             end
         end
     end
-    print(result[1])
    return result
 end
 
