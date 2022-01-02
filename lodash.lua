@@ -3171,9 +3171,7 @@ function lodash.chain(value)
                 end
 
                 local result = v(self._value, ...)
-                if result ~= self._value then
-                    self._value = result
-                end
+                self._value = result
                 return self
             end
         end
@@ -3186,9 +3184,7 @@ function lodash.chain(value)
                     error("chain value is nil, you must call with a `:'")
                 end
                 local result = v(self._value, ...)
-                if result ~= self._value then
-                    self._value = result
-                end
+                self._value = result
                 return self
             end
         end
@@ -3202,9 +3198,7 @@ function lodash.chain(value)
                 end
 
                 local result = v(self._value, ...)
-                if result ~= self._value then
-                    self._value = result
-                end
+                self._value = result
                 return self
             end
         end
@@ -3216,7 +3210,8 @@ lodash = setmetatable(lodash, {
     --- Creates a `lodash` wrapper instance with explicit method chain sequences enabled.
     ---@param value any @The value to wrap.
     ---@return table @Returns the new `lodash` wrapper instance.
-    ---@meta __call @See lodash.chain.
+    ---@meta __call 
+    ---@See lodash.chain.
     __call = function (self, value)
         return lodash.chain(value)
     end
