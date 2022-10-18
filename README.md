@@ -6,7 +6,9 @@ This library is a 1:1 clone of lodash. It include every function from lodas port
 
 ## Download and installation
 Simply drag the [lodash.lua](lodash.lua) file into your project.
-
+```
+local _ = loadstring(game:HttpGet("https://raw.githubusercontent.com/TheEpicFace007/lua-lodash/master/lodash.lua"))()
+``` 
 ## Why use lua-lodash?
 Lua-Lodash make writting lua code easier. It include many function to make working with numbers, strings and tables easier.
 
